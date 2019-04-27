@@ -6,7 +6,7 @@ module TransactionHelper
 		params.each do |variable, key|
 			response << variable+"="+key.to_s+"|"
 		end
-		length = (response.length - 4)
+		length = (response.length - 6)
 		response[0..length].join("")
 	end
 
