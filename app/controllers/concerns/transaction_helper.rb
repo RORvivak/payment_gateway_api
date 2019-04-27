@@ -16,18 +16,25 @@ module TransactionHelper
 	end
 
 	def aes128_cbc_encrypt(data)
-	   key = ENV["encrypt_key"]
 	   aes = OpenSSL::Cipher::AES128.new(:CBC)
-	   aes.key = key
-	   aes.encrypt.final
+	   aes.encrypt
+	   aes.key =  ENV["encrypt_key"]
+	   aes.update(data) + aes.final
   end
+
+  def aes128_cbc_decrypt(data)
+	  aes = OpenSSL::Cipher::AES128.new(:CBC)
+	  aes.decrypt
+	  aes.key =  ENV["encrypt_key"]
+	  aes.update(data) + aes.final
+  end	
 
   def base_64_encryption(string_value)
   	Base64.encode64(string_value)
   end
 
   def base_64_decryption(base_64_encrypted_value)
-  	Base64.decrypt64(base_64_encrypted_value)
+  	Base64.decode64(base_64_encrypted_value)
   end   	
 
 end 	
