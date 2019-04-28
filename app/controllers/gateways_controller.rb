@@ -17,6 +17,13 @@ class GatewaysController < ApplicationController
 	def transaction
 		aes128_encrypted_value = base_64_decryption(params[:msg]).force_encoding('iso-8859-1')
 		payload_with_sha = aes128_cbc_decrypt(aes128_encrypted_value)
-		render json: { status: 200, value: payload_with_sha }
+		input_flag = valid_input(payload_with_sha)
+		
+		if (input_flag)
+			transaction_response = transaction_response_generator(payload_with_sha)  
+			render json: { status: 200, gateway_response: transaction_response }
+		else
+			render json: { status: 500, error: "Data manipulation" }
+		end		
 	end	
 end
