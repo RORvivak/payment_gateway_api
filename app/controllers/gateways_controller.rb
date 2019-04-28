@@ -20,10 +20,11 @@ class GatewaysController < ApplicationController
 		input_flag = valid_input(payload_with_sha)
 		
 		if (input_flag)
-			transaction_response = transaction_response_generator(payload_with_sha)  
-			render json: { status: 200, gateway_response: transaction_response }
+			transaction_response = transaction_response_generator(payload_with_sha)
+			response_parameters = response_parameter_generator(transaction_response)  
+			render json: { status: 200, gateway_response: transaction_response, output_parameters: response_parameters }
 		else
-			render json: { status: 500, error: "Data manipulation" }
+			render json: { status: 500, txn_status: "failure" }
 		end		
 	end	
 end

@@ -50,5 +50,17 @@ module TransactionHelper
   	transaction_reference_no = ("pg_txn_" + DateTime.now.to_i.to_s)
   	final_response = ("txn_status=success|" + response +	"|payment_gateway_transaction_reference=" + transaction_reference_no)
     (final_response + "|hash=" +  Digest::SHA1.hexdigest(final_response)).gsub("|", "\"") 	
+  end
+
+  def response_parameter_generator(transaction_response)
+  	response_hash = {}
+  	transaction_response_array = transaction_response.split("\"")
+  	transaction_response_array.pop
+  	transaction_response_array.each do |e|
+  		key_value = e.split("=")
+      response_hash[key_value[0]] = key_value[1] 
+  	end
+  	response_hash
   end   	
+
 end 	
